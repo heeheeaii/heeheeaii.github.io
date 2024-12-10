@@ -13,9 +13,9 @@
                 <dmcolor key="light" color="#f8f9fa"/>
                 <dmcolor key="dark" color="#212529"/>
             </dmdesignskill>
-            <dmdesignskill skill="fonts" text_family="DM Sans"></dmdesignskill>
+            <dmdesignskill skill="fonts"></dmdesignskill>
             <dmdesignskill skill="headings"></dmdesignskill>
-            <dmdesignskill skill="background" image_for_colors="true" color="$light"></dmdesignskill>
+            <dmdesignskill skill="background" image_for_colors="true"></dmdesignskill>
             <dmdesignskill skill="bootstrap"></dmdesignskill>
         </dmdesign>
     </dmdesigns>
