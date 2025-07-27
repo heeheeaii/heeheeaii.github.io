@@ -1,38 +1,745 @@
 <!DOCTYPE html>
-<html lang="en" class="h-100">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="">
-        <title>Cover Template · Bootstrap v5.0</title>
-        <!-- Bootstrap core CSS -->
-        <link href="bootstrap_theme/bootstrap.css" rel="stylesheet" type="text/css">
-        <!-- Custom styles for this template -->
-        <link href="cover.css" rel="stylesheet">
-    </head>
-    <body class="d-flex h-100 text-center text-white bg-dark">
-        <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-            <header class="mb-auto">
-                <div>
-                    <h3 class="float-md-start mb-0">Treevalue</h3>
-                    <nav class="nav nav-masthead justify-content-center float-md-end">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        <a class="nav-link" href="/tree-carousel.html">Forest</a>
-                        <a class="nav-link" href="/poem-home.html">Peom</a>
-                    </nav>
-                </div>
-            </header>
-            <main class="px-3">
-                <h1>tree grow in spring,</h1>
-                <p>still growing. There is a gentle breeze, warm rain, and sweet oil blossoms. Peaks and butterflies fluttering.</p>
-                <p class="lead"> <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white" target="_pg_blank">more</a> </p>
-            </main>
-            <footer class="mt-auto text-white-50">
-                <p>treevalue</p>
-                <p></p>
-            </footer>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forest Product Launch</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        html::-webkit-scrollbar, body::-webkit-scrollbar {
+            display: none;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 25%, #2c5364 50%, #1a3a3a 75%, #0f2027 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* 动态背景粒子 */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(46, 204, 113, 0.4);
+            border-radius: 50%;
+            animation: float 10s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* 导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 50px;
+            backdrop-filter: blur(20px);
+            background: rgba(15, 32, 39, 0.8);
+            border-bottom: 1px solid rgba(46, 204, 113, 0.2);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2ecc71;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #2ecc71, #27ae60);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #2ecc71;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* 主要内容区域 */
+        .main-content {
+            padding-top: 120px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+            padding-bottom: 100px;
+        }
+
+        /* 标题区域 */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: slideUp 1s ease-out;
+        }
+
+        @keyframes slideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #2ecc71, #27ae60, #16a085);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            animation: titlePulse 3s ease-in-out infinite;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.02);
+            }
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 产品卡片容器 */
+        .cards-container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        /* 产品卡片 */
+        .product-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(46, 204, 113, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: cardFloat 1.5s ease-out;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(46, 204, 113, 0.3);
+        }
+
+        @keyframes cardFloat {
+            0% {
+                opacity: 0;
+                transform: translateY(100px) scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(46, 204, 113, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+
+        /* 卡片内容 */
+        .card-content {
+            color: white;
+            font-size: 16px;
+            line-height: 1.6;
+            min-height: 200px;
+        }
+
+        /* Markdown 样式 */
+        .card-content h1, .card-content h2, .card-content h3 {
+            color: #2ecc71;
+            margin-bottom: 15px;
+        }
+
+        .card-content h1 {
+            font-size: 1.8rem;
+        }
+
+        .card-content h2 {
+            font-size: 1.4rem;
+        }
+
+        .card-content h3 {
+            font-size: 1.2rem;
+        }
+
+        .card-content p {
+            margin-bottom: 15px;
+        }
+
+        .card-content ul, .card-content ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .card-content li {
+            margin-bottom: 5px;
+        }
+
+        .card-content code {
+            background: rgba(46, 204, 113, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Menlo', monospace;
+        }
+
+        .card-content pre {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 15px;
+        }
+
+        .card-content blockquote {
+            border-left: 4px solid #2ecc71;
+            padding-left: 20px;
+            margin: 15px 0;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .card-content a {
+            color: #2ecc71;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .card-content a:hover {
+            border-bottom-color: #2ecc71;
+        }
+
+        /* 分页组件 */
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(46, 204, 113, 0.2);
+            border-radius: 15px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .pagination-btn {
+            background: rgba(46, 204, 113, 0.2);
+            border: 1px solid rgba(46, 204, 113, 0.4);
+            color: #2ecc71;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            min-width: 45px;
+            text-align: center;
+        }
+
+        .pagination-btn:hover {
+            background: rgba(46, 204, 113, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .pagination-btn.active {
+            background: #2ecc71;
+            color: white;
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+        }
+
+        .pagination-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(46, 204, 113, 0.3);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            width: 60px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .pagination-input:focus {
+            outline: none;
+            border-color: #2ecc71;
+            box-shadow: 0 0 10px rgba(46, 204, 113, 0.3);
+        }
+
+        .pagination-info {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            margin: 0 10px;
+        }
+
+        /* 底部装饰 */
+        .footer-decoration {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 150px;
+            background: linear-gradient(0deg, rgba(15, 32, 39, 0.8) 0%, transparent 100%);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .forest-elements {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100px;
+            overflow: hidden;
+        }
+
+        .tree {
+            position: absolute;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 60px solid #27ae60;
+            animation: treeGrow 2s ease-out;
+            filter: blur(2px);
+        }
+
+        .tree:nth-child(1) {
+            left: 10%;
+            animation-delay: 0.5s;
+        }
+
+        .tree:nth-child(2) {
+            left: 25%;
+            animation-delay: 1s;
+        }
+
+        .tree:nth-child(3) {
+            left: 40%;
+            animation-delay: 1.5s;
+        }
+
+        .tree:nth-child(4) {
+            left: 60%;
+            animation-delay: 2s;
+        }
+
+        .tree:nth-child(5) {
+            left: 80%;
+            animation-delay: 2.5s;
+        }
+
+        @keyframes treeGrow {
+            0% {
+                transform: scaleY(0);
+                opacity: 0;
+            }
+            100% {
+                transform: scaleY(1);
+                opacity: 1;
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .product-card {
+                padding: 20px;
+            }
+
+            .pagination {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- 动态背景粒子 -->
+<div class="particles" id="particles"></div>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+    <div class="logo">
+        Tree value
+    </div>
+    <ul class="nav-links">
+        <!--        <li><a href="#home">首页</a></li>-->
+        <!--        <li><a href="#product">产品</a></li>-->
+        <!--        <li><a href="#features">特性</a></li>-->
+        <!--        <li><a href="#contact">联系</a></li>-->
+    </ul>
+</nav>
+
+<!-- 主要内容 -->
+<main class="main-content">
+    <!-- 标题区域 -->
+    <section class="hero-section">
+        <h1 class="hero-title">Beself</h1>
+        <p class="hero-subtitle">我走进森林，不是为了寻找。我走进森林，是为了迷失。</p>
+    </section>
+
+    <!-- 产品卡片容器 -->
+    <div class="cards-container">
+        <div class="cards-grid" id="cardsGrid">
+            <!-- 卡片将通过JavaScript动态生成 -->
         </div>
-        <script src="assets/js/popper.min.js"></script>
-        <script src="bootstrap/js/bootstrap.min.js"></script>
-    </body>
+
+        <!-- 分页组件 -->
+        <div class="pagination" id="pagination">
+            <button class="pagination-btn" id="prevBtn">‹</button>
+            <div class="pagination-info">
+                <span>第</span>
+                <input class="pagination-input" id="pageInput" min="1">
+                <span>页，共 <span id="totalPages">1</span> 页</span>
+            </div>
+            <button class="pagination-btn" id="nextBtn">›</button>
+            <button class="pagination-btn" id="firstBtn">首页</button>
+            <button class="pagination-btn" id="lastBtn">尾页</button>
+        </div>
+    </div>
+</main>
+
+<!-- 底部装饰 -->
+<div class="footer-decoration">
+    <div class="forest-elements">
+        <div class="tree"></div>
+        <div class="tree"></div>
+        <div class="tree"></div>
+        <div class="tree"></div>
+        <div class="tree"></div>
+    </div>
+</div>
+
+<script>
+    // 产品内容列表
+    const productContents = [
+        `🚀 Beself 1.0 正式发布
+
+非常激动地向大家宣布，Beself产品已重磅上线！在设计和功能层面，带来了如下重要特性：
+
+
+
+🎬 视频彻底禁用
+
+永远禁止一切视频内容，无论任何情况，都不会让视频加载或播放，为您打造更高效纯粹的体验。
+
+
+
+✅ 显式控制访问
+
+只有明确允许的网站才可访问。除非经过您的允许，否则总是无法打开网站。
+
+
+
+🗑️ 删除优先策略
+
+清理操作至上。如果您多次选择删除同一个网站，那么直接让它永远消失吧。
+
+
+
+🌙 强制黑暗模式
+
+黑暗模式已支持，不论白天还是夜晚，都能拥有舒适护眼的视觉体验。
+
+💻📱 跨平台发布
+
+桌面版与移动版同步上线，提供无缝一致的多终端体验，让您的工作与生活更加便捷流畅。
+
+---
+
+感谢每一位用户的关注和支持！
+现在就来体验吧！
+
+桌面下载地址: https://wwxb.lanzoul.com/iTiAW31r3sfi
+
+安卓下载地址: https://wwxb.lanzoul.com/iK4xc31r3jgf
+`,
+    ];
+
+    // 分页配置
+    const ITEMS_PER_PAGE = 10;
+    let currentPage = 1;
+    let totalPages = Math.ceil(productContents.length / ITEMS_PER_PAGE);
+
+    // 创建粒子效果
+    function createParticles() {
+        const particles = document.getElementById('particles');
+
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 10 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particles.appendChild(particle);
+        }
+    }
+
+    // 渲染卡片
+    function renderCards() {
+        const cardsGrid = document.getElementById('cardsGrid');
+        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+        const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, productContents.length);
+
+        // 清空现有卡片
+        cardsGrid.innerHTML = '';
+
+        // 生成当前页的卡片
+        for (let i = startIndex; i < endIndex; i++) {
+            const cardElement = document.createElement('div');
+            cardElement.className = 'product-card';
+            cardElement.style.animationDelay = `${(i - startIndex) * 0.1}s`;
+
+            cardElement.innerHTML = `
+                <div class="card-content">
+                    ${marked.parse(productContents[i])}
+                </div>
+            `;
+
+            cardsGrid.appendChild(cardElement);
+        }
+    }
+
+    // 更新分页组件
+    function updatePagination() {
+        const pageInput = document.getElementById('pageInput');
+        const totalPagesSpan = document.getElementById('totalPages');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const firstBtn = document.getElementById('firstBtn');
+        const lastBtn = document.getElementById('lastBtn');
+
+        pageInput.value = currentPage;
+        pageInput.max = totalPages;
+        totalPagesSpan.textContent = totalPages;
+
+        prevBtn.disabled = currentPage === 1;
+        nextBtn.disabled = currentPage === totalPages;
+        firstBtn.disabled = currentPage === 1;
+        lastBtn.disabled = currentPage === totalPages;
+    }
+
+    // 跳转到指定页面
+    function goToPage(page) {
+        if (page >= 1 && page <= totalPages && page !== currentPage) {
+            currentPage = page;
+            renderCards();
+            updatePagination();
+        }
+    }
+
+    // 滚动时导航栏效果
+    window.addEventListener('scroll', function () {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.style.background = 'rgba(15, 32, 39, 0.95)';
+            navbar.style.transform = 'translateY(0)';
+        } else {
+            navbar.style.background = 'rgba(15, 32, 39, 0.8)';
+        }
+    });
+
+    // 初始化
+    document.addEventListener('DOMContentLoaded', function () {
+        createParticles();
+
+        // 计算总页数
+        totalPages = Math.ceil(productContents.length / ITEMS_PER_PAGE);
+
+        // 初始渲染
+        renderCards();
+        updatePagination();
+
+        // 绑定分页事件
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            goToPage(currentPage - 1);
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            goToPage(currentPage + 1);
+        });
+
+        document.getElementById('firstBtn').addEventListener('click', () => {
+            goToPage(1);
+        });
+
+        document.getElementById('lastBtn').addEventListener('click', () => {
+            goToPage(totalPages);
+        });
+
+        document.getElementById('pageInput').addEventListener('change', (e) => {
+            const page = parseInt(e.target.value);
+            goToPage(page);
+        });
+
+        document.getElementById('pageInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const page = parseInt(e.target.value);
+                goToPage(page);
+            }
+        });
+    });
+</script>
+</body>
 </html>
