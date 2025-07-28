@@ -1,5 +1,13 @@
 // 产品内容列表
 const productContents = [
+    `Beself 1.1.1
+
+1 修复桌面版bug
+
+
+桌面下载地址: https://wwxb.lanzoul.com/iKE413230ued
+`
+    ,
     ` Beself 1.1
 
 1 新增网站复制，允许网页管理，更新获取
