@@ -22,7 +22,7 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', 'Helvetica Neue', Helvetica, Arial, sans-serif;
             background: linear-gradient(135deg, #0f2027 0%, #203a43 25%, #2c5364 50%, #1a3a3a 75%, #0f2027 100%);
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
@@ -192,6 +192,135 @@
             font-weight: 300;
             max-width: 600px;
             margin: 0 auto;
+        }
+
+        /* 轮播图样式 */
+        .carousel-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 50px 0;
+            position: relative;
+            animation: slideUp 1.2s ease-out;
+        }
+
+        .carousel-wrapper {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(46, 204, 113, 0.2);
+        }
+
+        .carousel-track {
+            display: flex;
+            width: 500%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .carousel-slide {
+            width: 20%;
+            height: 100%;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .carousel-slide .slide-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            padding: 30px;
+            color: white;
+        }
+
+        .slide-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #2ecc71;
+        }
+
+        .slide-description {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* 轮播图控制按钮 */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(46, 204, 113, 0.8);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(46, 204, 113, 1);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+        }
+
+        .carousel-btn.prev {
+            left: 20px;
+        }
+
+        .carousel-btn.next {
+            right: 20px;
+        }
+
+        /* 轮播图指示器 */
+        .carousel-indicators {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .carousel-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .carousel-indicator.active {
+            background: #2ecc71;
+            box-shadow: 0 0 10px rgba(46, 204, 113, 0.6);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .carousel-indicator:hover {
+            background: rgba(255, 255, 255, 0.7);
+            transform: scale(1.2);
         }
 
         /* 产品卡片容器 */
@@ -498,6 +627,40 @@
                 font-size: 1.2rem;
             }
 
+            .carousel-container {
+                margin: 30px 20px;
+            }
+
+            .carousel-wrapper {
+                height: 300px;
+            }
+
+            .carousel-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            .carousel-btn.prev {
+                left: 10px;
+            }
+
+            .carousel-btn.next {
+                right: 10px;
+            }
+
+            .slide-overlay {
+                padding: 20px;
+            }
+
+            .slide-title {
+                font-size: 1.4rem;
+            }
+
+            .slide-description {
+                font-size: 0.9rem;
+            }
+
             .cards-grid {
                 grid-template-columns: 1fr;
                 gap: 20px;
@@ -539,6 +702,24 @@
         <p class="hero-subtitle">我走进森林，不是为了寻找。我走进森林，是为了迷失。</p>
     </section>
 
+    <!-- 轮播图区域 -->
+    <div class="carousel-container">
+        <div class="carousel-wrapper">
+            <div class="carousel-track" id="carouselTrack">
+                <!-- 轮播图片将通过JavaScript动态生成 -->
+            </div>
+
+            <!-- 左右切换按钮 -->
+            <button class="carousel-btn prev" id="prevCarouselBtn">‹</button>
+            <button class="carousel-btn next" id="nextCarouselBtn">›</button>
+
+            <!-- 指示器 -->
+            <div class="carousel-indicators" id="carouselIndicators">
+                <!-- 指示器将通过JavaScript动态生成 -->
+            </div>
+        </div>
+    </div>
+
     <!-- 产品卡片容器 -->
     <div class="cards-container">
         <div class="cards-grid" id="cardsGrid">
@@ -571,67 +752,19 @@
     </div>
 </div>
 
+<!-- 引入外部JS文件 -->
+<script src="assestes/js/productContents.js"></script>
+
 <script>
-    // 产品内容列表
-    const productContents = [
-        ` Beself 1.1
-
-1 新增网站复制，允许网页管理，更新获取
-
-
-
-桌面下载地址: https://wwxb.lanzoul.com/iAdD231yaqkf
-
-安卓下载地址: https://wwxb.lanzoul.com/iFwAh31yajsb
-`
-        ,
-        `🚀 Beself 1.0 正式发布
-
-非常激动地向大家宣布，Beself产品已重磅上线！在设计和功能层面，带来了如下重要特性：
-
-
-
-🎬 视频彻底禁用
-
-永远禁止一切视频内容，无论任何情况，都不会让视频加载或播放，为您打造更高效纯粹的体验。
-
-
-
-✅ 显式控制访问
-
-只有明确允许的网站才可访问。除非经过您的允许，否则总是无法打开网站。
-
-
-
-🗑️ 删除优先策略
-
-清理操作至上。如果您多次选择删除同一个网站，那么直接让它永远消失吧。
-
-
-
-🌙 强制黑暗模式
-
-黑暗模式已支持，不论白天还是夜晚，都能拥有舒适护眼的视觉体验。
-
-💻📱 跨平台发布
-
-桌面版与移动版同步上线，提供无缝一致的多终端体验，让您的工作与生活更加便捷流畅。
-
----
-
-感谢每一位用户的关注和支持！
-现在就来体验吧！
-
-桌面下载地址: https://wwxb.lanzoul.com/iTiAW31r3sfi
-
-安卓下载地址: https://wwxb.lanzoul.com/iK4xc31r3jgf
-`,
-    ];
-
     // 分页配置
     const ITEMS_PER_PAGE = 10;
     let currentPage = 1;
     let totalPages = Math.ceil(productContents.length / ITEMS_PER_PAGE);
+
+    // 轮播图配置
+    let currentSlide = 0;
+    let carouselInterval;
+    const CAROUSEL_INTERVAL = 4000; // 4秒自动切换
 
     // 创建粒子效果
     function createParticles() {
@@ -645,6 +778,84 @@
             particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
             particles.appendChild(particle);
         }
+    }
+
+    // 初始化轮播图
+    function initCarousel() {
+        const carouselTrack = document.getElementById('carouselTrack');
+        const carouselIndicators = document.getElementById('carouselIndicators');
+
+        // 生成轮播图片
+        carouselImages.forEach((image, index) => {
+            const slide = document.createElement('div');
+            slide.className = 'carousel-slide';
+            slide.innerHTML = `
+                <img src="${image.src}" alt="${image.alt}" loading="lazy">
+                <div class="slide-overlay">
+<!--                    <h3 class="slide-title">${image.title}</h3>-->
+<!--                    <p class="slide-description">${image.alt}</p>-->
+                </div>
+            `;
+            carouselTrack.appendChild(slide);
+
+            // 生成指示器
+            const indicator = document.createElement('div');
+            indicator.className = 'carousel-indicator';
+            if (index === 0) indicator.classList.add('active');
+            indicator.addEventListener('click', () => goToSlide(index));
+            carouselIndicators.appendChild(indicator);
+        });
+
+        // 开始自动播放
+        startCarouselAutoplay();
+    }
+
+    // 切换到指定幻灯片
+    function goToSlide(slideIndex) {
+        currentSlide = slideIndex;
+        const carouselTrack = document.getElementById('carouselTrack');
+        const indicators = document.querySelectorAll('.carousel-indicator');
+
+        // 更新轮播图位置
+        carouselTrack.style.transform = `translateX(-${currentSlide * 20}%)`;
+
+        // 更新指示器状态
+        indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === currentSlide);
+        });
+
+        // 重新启动自动播放
+        restartCarouselAutoplay();
+    }
+
+    // 下一张幻灯片
+    function nextSlide() {
+        const nextIndex = (currentSlide + 1) % carouselImages.length;
+        goToSlide(nextIndex);
+    }
+
+    // 上一张幻灯片
+    function prevSlide() {
+        const prevIndex = (currentSlide - 1 + carouselImages.length) % carouselImages.length;
+        goToSlide(prevIndex);
+    }
+
+    // 开始自动播放
+    function startCarouselAutoplay() {
+        carouselInterval = setInterval(nextSlide, CAROUSEL_INTERVAL);
+    }
+
+    // 停止自动播放
+    function stopCarouselAutoplay() {
+        if (carouselInterval) {
+            clearInterval(carouselInterval);
+        }
+    }
+
+    // 重新启动自动播放
+    function restartCarouselAutoplay() {
+        stopCarouselAutoplay();
+        startCarouselAutoplay();
     }
 
     // 渲染卡片
@@ -714,6 +925,7 @@
     // 初始化
     document.addEventListener('DOMContentLoaded', function () {
         createParticles();
+        initCarousel();
 
         // 计算总页数
         totalPages = Math.ceil(productContents.length / ITEMS_PER_PAGE);
@@ -721,6 +933,20 @@
         // 初始渲染
         renderCards();
         updatePagination();
+
+        // 绑定轮播图事件
+        document.getElementById('prevCarouselBtn').addEventListener('click', () => {
+            prevSlide();
+        });
+
+        document.getElementById('nextCarouselBtn').addEventListener('click', () => {
+            nextSlide();
+        });
+
+        // 鼠标悬停时暂停自动播放
+        const carouselWrapper = document.querySelector('.carousel-wrapper');
+        carouselWrapper.addEventListener('mouseenter', stopCarouselAutoplay);
+        carouselWrapper.addEventListener('mouseleave', startCarouselAutoplay);
 
         // 绑定分页事件
         document.getElementById('prevBtn').addEventListener('click', () => {
