@@ -5,7 +5,7 @@ const productContents = [
 1 修复桌面版bug
 
 
-桌面下载地址: https://wwxb.lanzoul.com/iKE413230ued
+桌面下载地址: https://wwxb.lanzoul.com/ik6cU325ejyd
 `
     ,
     ` Beself 1.1
