@@ -1,6 +1,6 @@
 // 产品内容列表
 const productContents = [
-    `🚀 Beself 1.1.1 
+    `🚀 Beself 1.2
     
     
     
@@ -35,9 +35,9 @@ const productContents = [
 感谢每一位用户的关注和支持！
 现在就来体验吧！
 
-桌面下载地址: https://wwxb.lanzoul.com/ik6cU325ejyd
+桌面下载地址: https://wwxb.lanzoul.com/ilc5836776xi
 
-安卓下载地址: https://wwxb.lanzoul.com/iFwAh31yajsb
+安卓下载地址: https://wwxb.lanzoul.com/ibpIy36776za
 `
 ];
 // 轮播图图片数组
