@@ -1,30 +1,9 @@
 // 产品内容列表
 const productContents = [
-    `Beself 1.1.1
-
-1 修复桌面版bug
-
-
-桌面下载地址: https://wwxb.lanzoul.com/ik6cU325ejyd
-`
-    ,
-    ` Beself 1.1
-
-1 新增网站复制，允许网页管理，更新获取
-
-
-
-桌面下载地址: https://wwxb.lanzoul.com/iAdD231yaqkf
-
-安卓下载地址: https://wwxb.lanzoul.com/iFwAh31yajsb
-`
-    ,
-    `🚀 Beself 1.0 正式发布
-
-非常激动地向大家宣布，Beself产品已重磅上线！在设计和功能层面，带来了如下重要特性：
-
-
-
+    `🚀 Beself 1.1.1 
+    
+    
+    
 🎬 视频彻底禁用
 
 永远禁止一切视频内容，无论任何情况，都不会让视频加载或播放，为您打造更高效纯粹的体验。
@@ -56,10 +35,10 @@ const productContents = [
 感谢每一位用户的关注和支持！
 现在就来体验吧！
 
-桌面下载地址: https://wwxb.lanzoul.com/iTiAW31r3sfi
+桌面下载地址: https://wwxb.lanzoul.com/ik6cU325ejyd
 
-安卓下载地址: https://wwxb.lanzoul.com/iK4xc31r3jgf
-`,
+安卓下载地址: https://wwxb.lanzoul.com/iFwAh31yajsb
+`
 ];
 // 轮播图图片数组
 const carouselImages = [
