@@ -26,7 +26,8 @@ const productContents = [
 https://wwxb.lanzoul.com/b0139b1lve
 密码:3oin
 
-安卓下载地址: https://wwbvb.lanzoul.com/i47V23jdwgwb
+安卓下载地址: https://wwbvb.lanzoul.com/iLkxB3jhtkwb
+
 
 `
 ];
