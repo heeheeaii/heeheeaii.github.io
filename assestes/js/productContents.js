@@ -23,10 +23,10 @@ const productContents = [
 
 桌面下载地址: 
 (请参考分割文件恢复文件名，在安卓的功能->其他功能->压缩->合并文件恢复，切勿修改分割记录文件)
-https://wwxb.lanzoul.com/b0139b1lve
+https://wwxb.lanzoux.com/b0139b1lve
 密码:3oin
 
-安卓下载地址: https://wwbvb.lanzoul.com/iLkxB3jhtkwb
+安卓下载地址: https://wwbvb.lanzoux.com/iLkxB3jhtkwb
 
 
 `
