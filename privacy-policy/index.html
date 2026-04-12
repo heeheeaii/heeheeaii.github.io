@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-ui-lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <script>
+        (function () {
+            try {
+                var k = 'beself_site_lang';
+                var s = localStorage.getItem(k);
+                var l = (s === 'zh' || s === 'en') ? s : (navigator.language && navigator.language.toLowerCase().startsWith('zh') ? 'zh' : 'en');
+                document.documentElement.setAttribute('data-ui-lang', l);
+                document.documentElement.lang = l === 'zh' ? 'zh-CN' : 'en';
+            } catch (e) { /* keep markup default */ }
+        })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <title>隐私政策 — Beself</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --border: rgba(15, 23, 42, 0.12);
+            --text: #0f172a;
+            --muted: rgba(15, 23, 42, 0.72);
+            --accent: #34d399;
+            --accent-dim: rgba(52, 211, 153, 0.15);
+            --stroke-strong: rgba(15, 23, 42, 0.18);
+            --radius-pill: 999px;
+            --font: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        html[data-ui-lang="zh"] .i18n-en {
+            display: none !important;
+        }
+
+        html[data-ui-lang="en"] .i18n-zh {
+            display: none !important;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.75;
+            padding: 1.25rem clamp(1rem, 4vw, 2rem) 3rem;
+            max-width: 48rem;
+            margin: 0 auto;
+            -webkit-font-smoothing: antialiased;
+        }
+        .topbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem 1.25rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.875rem;
+        }
+        .topbar a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        .topbar a:hover { text-decoration: underline; }
+        .muted { color: var(--muted); font-size: 0.8125rem; }
+        .lang-toggle {
+            display: inline-flex;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--stroke-strong);
+            overflow: hidden;
+            font-family: var(--font);
+        }
+        .lang-toggle button {
+            border: none;
+            background: transparent;
+            color: var(--muted);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.4rem 0.65rem;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.2s, color 0.2s;
+        }
+        .lang-toggle button:hover {
+            color: var(--text);
+            background: var(--card);
+        }
+        .lang-toggle button[aria-pressed="true"] {
+            background: var(--accent-dim);
+            color: var(--accent);
+        }
+        .block {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.35rem 1.25rem 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .block h1 {
+            font-size: 1.35rem;
+            margin-bottom: 0.35rem;
+            letter-spacing: -0.02em;
+        }
+        .block .meta { margin-bottom: 1.25rem; }
+        h2 {
+            font-size: 1.05rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+            font-weight: 700;
+        }
+        h2:first-of-type { margin-top: 0; }
+        p, li { font-size: 0.9375rem; color: var(--muted); margin: 0.6rem 0; }
+        p strong, li strong { color: var(--text); }
+        ul { padding-left: 1.2rem; margin: 0.5rem 0; }
+        .note {
+            margin-top: 1.5rem;
+            font-size: 0.8125rem;
+            color: var(--muted);
+            opacity: 0.85;
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <a href="../index.html">
+            <span class="i18n-zh">← 首页</span>
+            <span class="i18n-en">← Home</span>
+        </a>
+        <div class="lang-toggle" role="group" aria-label="Language">
+            <button type="button" id="langZh" data-lang="zh" aria-pressed="true">中文</button>
+            <button type="button" id="langEn" data-lang="en" aria-pressed="false">EN</button>
+        </div>
+    </div>
+
+    <div class="i18n-zh block">
+        <h1>Beself 隐私政策</h1>
+        <p class="meta muted">更新日期：2026 年 4 月 12 日 · 生效日期：2026 年 4 月 12 日</p>
+
+        <p>
+            欢迎使用 Beself（以下简称「本应用」）。我们重视您的个人信息保护，并将依法采取合理安全措施。
+            请在安装或使用前仔细阅读本政策。
+        </p>
+
+        <h2>一、适用范围</h2>
+        <p>
+            本政策适用于您在 Android、Windows 等终端安装、使用本应用时，我们对相关个人信息的处理活动。
+            本应用以网页浏览与本地工具为主；您主动访问的第三方网站或服务，由其各自隐私政策约束。
+        </p>
+
+        <h2>二、我们处理的信息</h2>
+        <ul>
+            <li><strong>设备与网络状态</strong>：用于联网、下载与基础稳定性（如网络是否可用），不用于单独识别个人身份。</li>
+            <li><strong>本地应用数据</strong>：设置、书签类数据、缓存、笔记及您导出的文件等，默认保存在本机应用专属目录；除非您自行分享或上传至第三方，我们不会将上述内容上传至开发者自有服务器。</li>
+            <li><strong>相机、麦克风、位置</strong>：仅在系统授权且网页或功能合法请求时使用；您可随时在系统设置中关闭。</li>
+            <li><strong>通知</strong>：用于下载完成、前台任务状态等提示；可在系统设置中管理。</li>
+            <li><strong>文件与媒体</strong>：通过系统文件选择器或您明确授权的路径访问，不超出操作范围扫描无关文件。</li>
+        </ul>
+
+        <h2>三、权限说明（以系统实际提示为准）</h2>
+        <ul>
+            <li>网络与网络状态：加载网页、下载与连接检测。</li>
+            <li>前台服务：合规的后台同步或媒体播放相关任务及状态通知。</li>
+            <li>相机、录音、音频设置、唤醒锁定：网页或应用内多媒体场景。</li>
+            <li>存储与媒体读取：保存与读取应用数据与您选择的文件；遵循分区存储与最小必要原则。</li>
+            <li>位置：在网页或功能需要且您授权时使用。</li>
+            <li>振动：轻量交互反馈。</li>
+        </ul>
+
+        <h2>四、第三方与内容</h2>
+        <p>
+            第三方网站可能独立收集您的信息。请阅读其政策；我们不对第三方行为承担责任，应用内将尽量遵循平台安全实践（如优先加密传输）。
+        </p>
+
+        <h2>五、存储与安全</h2>
+        <ul>
+            <li>数据主要存于终端，请妥善保管设备。</li>
+            <li>我们采取合理措施防范未授权访问、泄露、损毁。</li>
+            <li>除法律要求或征得您单独同意外，不向他人提供个人信息。</li>
+        </ul>
+
+        <h2>六、未成年人</h2>
+        <p>未成年人请在监护人指导下使用。若发现未经监护人同意收集未成年人信息，我们将依法处理。</p>
+
+        <h2>七、您的权利</h2>
+        <ul>
+            <li>通过应用内功能或卸载等方式管理本地数据；</li>
+            <li>撤回权限同意；</li>
+            <li>通过下方联系方式咨询、投诉。</li>
+        </ul>
+
+        <h2>八、政策更新</h2>
+        <p>我们可能修订本政策，并在本页更新日期。重大变更将尽力提示。</p>
+
+        <h2>九、联系我们</h2>
+        <p><strong>开发者</strong>：Treevalue / Beself</p>
+        <p>电子邮箱：请通过应用商店开发者资料中的公示方式联系（如有变更将同步更新）。</p>
+
+        <p class="note">本页由 GitHub Pages 托管；托管方可能产生访问日志等，与其隐私声明相关，与本应用内数据处理相互独立。</p>
+    </div>
+
+    <div class="i18n-en block">
+        <h1>Beself Privacy Policy</h1>
+        <p class="meta muted">Last updated: April 12, 2026 · Effective: April 12, 2026</p>
+
+        <p>
+            Welcome to Beself (“the App”). We respect your privacy and take reasonable measures to protect personal information in accordance with applicable laws.
+            Please read this Policy before you install or use the App.
+        </p>
+
+        <h2>1. Scope</h2>
+        <p>
+            This Policy describes how we handle personal information when you install and use the App on devices such as Android or Windows.
+            The App provides web browsing and on-device utilities. Third-party websites or services you choose to visit are governed by their own policies.
+        </p>
+
+        <h2>2. Information we process</h2>
+        <ul>
+            <li><strong>Device and network status</strong>: Used for connectivity, downloads, and basic stability (e.g., whether the network is available), not to identify you by itself.</li>
+            <li><strong>On-device app data</strong>: Settings, bookmarks-like data, caches, notes, and files you export are stored locally in app-specific storage; we do not upload this to our own servers unless you voluntarily share or upload it elsewhere.</li>
+            <li><strong>Camera, microphone, location</strong>: Used only when the system grants permission and a webpage or feature legitimately requests it; you can revoke access in system settings.</li>
+            <li><strong>Notifications</strong>: For download completion, foreground task status, etc.; configurable in system settings.</li>
+            <li><strong>Files and media</strong>: Accessed through the system picker or paths you explicitly authorize; we do not scan unrelated files beyond your actions.</li>
+        </ul>
+
+        <h2>3. Permissions (as shown by your OS)</h2>
+        <ul>
+            <li>Network access and state: load pages, downloads, connectivity checks.</li>
+            <li>Foreground services: compliant background sync or media-related tasks with status visibility.</li>
+            <li>Camera, audio recording, audio settings, wake lock: multimedia scenarios in webpages or the App.</li>
+            <li>Storage and media: save and read app data and files you choose; scoped storage and data minimization where applicable.</li>
+            <li>Location: when needed by a webpage or feature and authorized by you.</li>
+            <li>Vibration: light UI feedback.</li>
+        </ul>
+
+        <h2>4. Third parties and content</h2>
+        <p>
+            Third-party sites may collect information independently. Please read their policies. We are not responsible for third-party practices; the App follows common platform security practices (e.g., preferring encrypted transport where possible).
+        </p>
+
+        <h2>5. Storage and security</h2>
+        <ul>
+            <li>Data is primarily stored on your device; keep your device secure.</li>
+            <li>We apply reasonable safeguards against unauthorized access, disclosure, or loss.</li>
+            <li>We do not sell or share personal information with others except where required by law or with your separate consent.</li>
+        </ul>
+
+        <h2>6. Minors</h2>
+        <p>Minors should use the App under guardian guidance. If we learn we collected a minor’s information without appropriate consent, we will take compliant remedial steps.</p>
+
+        <h2>7. Your rights</h2>
+        <ul>
+            <li>Manage local data via in-app features or by uninstalling;</li>
+            <li>Withdraw consent for permissions;</li>
+            <li>Contact us using the details below.</li>
+        </ul>
+
+        <h2>8. Changes</h2>
+        <p>We may update this Policy and revise the “Last updated” date. Material changes will be communicated where practicable.</p>
+
+        <h2>9. Contact</h2>
+        <p><strong>Developer</strong>: Treevalue / Beself</p>
+        <p>Email: please use the contact method published on the app store developer profile (updated here if it changes).</p>
+
+        <p class="note">This page is hosted on GitHub Pages; the host may process technical logs under its own privacy statement, separate from in-app data processing.</p>
+    </div>
+
+    <p class="muted" style="text-align:center;margin-top:2rem;">© Treevalue</p>
+
+    <script>
+        (function () {
+            var LANG_KEY = 'beself_site_lang';
+
+            function detectLang() {
+                try {
+                    var saved = localStorage.getItem(LANG_KEY);
+                    if (saved === 'zh' || saved === 'en') return saved;
+                } catch (e) { /* ignore */ }
+                return navigator.language && navigator.language.toLowerCase().startsWith('zh') ? 'zh' : 'en';
+            }
+
+            function applyUiLang(lang) {
+                try {
+                    localStorage.setItem(LANG_KEY, lang);
+                } catch (e) { /* ignore */ }
+
+                document.documentElement.setAttribute('data-ui-lang', lang);
+                document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+
+                var zhBtn = document.getElementById('langZh');
+                var enBtn = document.getElementById('langEn');
+                if (zhBtn) zhBtn.setAttribute('aria-pressed', lang === 'zh' ? 'true' : 'false');
+                if (enBtn) enBtn.setAttribute('aria-pressed', lang === 'en' ? 'true' : 'false');
+
+                document.title = lang === 'zh' ? '隐私政策 — Beself' : 'Privacy Policy — Beself';
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                applyUiLang(detectLang());
+                var zhBtn = document.getElementById('langZh');
+                var enBtn = document.getElementById('langEn');
+                if (zhBtn) zhBtn.addEventListener('click', function () { applyUiLang('zh'); });
+                if (enBtn) enBtn.addEventListener('click', function () { applyUiLang('en'); });
+            });
+        })();
+    </script>
+</body>
+</html>

@@ -1,232 +1,359 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-ui-lang="zh">
 <head>
     <meta charset="UTF-8">
+    <script>
+        (function () {
+            try {
+                var k = 'beself_site_lang';
+                var s = localStorage.getItem(k);
+                var l = (s === 'zh' || s === 'en') ? s : (navigator.language && navigator.language.toLowerCase().startsWith('zh') ? 'zh' : 'en');
+                document.documentElement.setAttribute('data-ui-lang', l);
+                document.documentElement.lang = l === 'zh' ? 'zh-CN' : 'en';
+            } catch (e) { /* keep markup default */ }
+        })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forest Product Launch</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+    <meta name="color-scheme" content="light">
+    <title>Beself — 跨平台浏览器与工具</title>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+          onload="this.onload=null;this.rel='stylesheet';document.documentElement.classList.add('font-webfont')">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+    </noscript>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bg-deep: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f1f5f9;
+            --stroke: rgba(15, 23, 42, 0.12);
+            --stroke-strong: rgba(15, 23, 42, 0.18);
+            --text: #0f172a;
+            --text-muted: rgba(15, 23, 42, 0.72);
+            --accent: #34d399;
+            --accent-dim: rgba(52, 211, 153, 0.15);
+            --accent-glow: rgba(52, 211, 153, 0.35);
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --radius-pill: 999px;
+            --shadow-lg: 0 16px 48px rgba(15, 23, 42, 0.12);
+            --nav-h: 72px;
         }
 
-        html, body {
-            scrollbar-width: none;
-            -ms-overflow-style: none;
+        html {
+            --font: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+                'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', sans-serif;
         }
 
-        html::-webkit-scrollbar, body::-webkit-scrollbar {
-            display: none;
+        html.font-webfont {
+            --font: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'PingFang SC',
+                'Microsoft YaHei', '微软雅黑', sans-serif;
+        }
+
+        html[data-ui-lang="zh"] .i18n-en { display: none !important; }
+        html[data-ui-lang="en"] .i18n-zh { display: none !important; }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background: linear-gradient(135deg, #0f2027 0%, #203a43 25%, #2c5364 50%, #1a3a3a 75%, #0f2027 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
+            font-family: var(--font);
+            background: var(--bg-deep);
+            color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
-            position: relative;
+            -webkit-font-smoothing: antialiased;
         }
 
-        @keyframes gradientShift {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
-        }
-
-        /* 动态背景粒子 */
-        .particles {
+        .bg-layer {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
+            z-index: 0;
             pointer-events: none;
-            z-index: 1;
         }
 
-        .particle {
+        .bg-mesh {
             position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(46, 204, 113, 0.4);
-            border-radius: 50%;
-            animation: float 10s infinite linear;
+            inset: -20%;
+            background:
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(52, 211, 153, 0.1), transparent),
+                radial-gradient(ellipse 60% 40% at 100% 0%, rgba(56, 189, 248, 0.08), transparent),
+                radial-gradient(ellipse 50% 30% at 0% 100%, rgba(167, 139, 250, 0.06), transparent);
         }
 
-        @keyframes float {
-            0% {
-                transform: translateY(100vh) translateX(0px);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) translateX(100px);
-                opacity: 0;
-            }
+        .bg-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+            background-size: 64px 64px;
+            mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black, transparent);
         }
 
-        /* 导航栏 */
+        .noise {
+            position: absolute;
+            inset: 0;
+            opacity: 0.012;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
         .navbar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            padding: 20px 50px;
-            backdrop-filter: blur(20px);
-            background: rgba(15, 32, 39, 0.8);
-            border-bottom: 1px solid rgba(46, 204, 113, 0.2);
-            z-index: 1000;
+            height: var(--nav-h);
+            padding: 0 clamp(1.25rem, 4vw, 2.5rem);
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s ease;
+            z-index: 1000;
+            background: var(--bg-deep);
+            border-bottom: 1px solid var(--stroke);
+            box-shadow: 0 1px 0 rgba(15, 23, 42, 0.08);
         }
 
-        .logo {
-            font-size: 24px;
-            font-weight: 700;
-            color: #2ecc71;
-        }
-
-        .nav-links {
+        .brand {
             display: flex;
-            gap: 30px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: rgba(255, 255, 255, 0.8);
+            align-items: center;
+            gap: 0.65rem;
             text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
+            color: var(--text);
         }
 
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #2ecc71, #27ae60);
-            transition: width 0.3s ease;
+        .brand-mark {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent), #22c55e);
+            box-shadow: 0 8px 24px var(--accent-glow);
         }
 
-        .nav-links a:hover {
-            color: #2ecc71;
+        .brand-text {
+            font-weight: 800;
+            font-size: 1.125rem;
+            letter-spacing: -0.02em;
         }
 
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* 主要内容区域 */
-        .main-content {
-            padding-top: 120px;
-            min-height: 100vh;
+        .nav-actions {
             display: flex;
-            flex-direction: column;
             align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-link {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 600;
+            padding: 0.5rem 0.85rem;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--stroke);
+            background: #ffffff;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: color 0.2s, background 0.2s, border-color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--text);
+            background: var(--bg-card-hover);
+            border-color: var(--stroke-strong);
+        }
+
+        .nav-link:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        .lang-toggle {
+            display: inline-flex;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--stroke-strong);
+            overflow: hidden;
+            font-family: var(--font);
+        }
+
+        .lang-toggle button {
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.4rem 0.65rem;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .lang-toggle button:hover {
+            color: var(--text);
+            background: var(--bg-card);
+        }
+
+        .lang-toggle button[aria-pressed="true"] {
+            background: var(--accent-dim);
+            color: var(--accent);
+        }
+
+        .main-content {
             position: relative;
             z-index: 10;
-            padding-bottom: 100px;
-        }
-
-        /* 标题区域 */
-        .hero-section {
-            text-align: center;
-            margin-bottom: 50px;
-            animation: slideUp 1s ease-out;
-        }
-
-        @keyframes slideUp {
-            0% {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hero-title {
-            font-size: 4rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #2ecc71, #27ae60, #16a085);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
-            animation: titlePulse 3s ease-in-out infinite;
-        }
-
-        @keyframes titlePulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.02);
-            }
-        }
-
-        .hero-subtitle {
-            font-size: 1.5rem;
-            color: rgba(255, 255, 255, 0.7);
-            font-weight: 300;
-            max-width: 600px;
+            padding-top: calc(var(--nav-h) + 2.5rem);
+            padding-bottom: 5rem;
+            padding-left: clamp(1.25rem, 4vw, 2.5rem);
+            padding-right: clamp(1.25rem, 4vw, 2.5rem);
+            max-width: 1120px;
             margin: 0 auto;
         }
 
-        /* 轮播图样式 */
+        .hero-section {
+            text-align: center;
+            margin-bottom: clamp(2rem, 5vw, 3.5rem);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.35rem 0.85rem;
+            border-radius: var(--radius-pill);
+            background: var(--accent-dim);
+            border: 1px solid rgba(52, 211, 153, 0.25);
+            color: var(--accent);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin-bottom: 1.25rem;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 7vw, 3.75rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2.4vw, 1.2rem);
+            color: var(--text-muted);
+            font-weight: 450;
+            max-width: 28rem;
+            margin: 0 auto 1.75rem;
+            line-height: 1.65;
+        }
+
+        .download-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+            align-items: stretch;
+            margin-bottom: 0.75rem;
+        }
+
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            min-height: 48px;
+            padding: 0 1.35rem;
+            border-radius: var(--radius-pill);
+            font-family: var(--font);
+            font-size: 0.9375rem;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid var(--stroke-strong);
+            background: var(--bg-card);
+            color: var(--text);
+            transition: transform 0.2s, border-color 0.2s, background 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-download:hover {
+            background: var(--bg-card-hover);
+            border-color: rgba(52, 211, 153, 0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+        }
+
+        .btn-download--primary {
+            background: linear-gradient(135deg, #34d399, #22c55e);
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: 0 8px 32px var(--accent-glow);
+        }
+
+        .btn-download--primary:hover {
+            box-shadow: 0 10px 24px rgba(52, 211, 153, 0.3);
+        }
+
+        .btn-download svg { flex-shrink: 0; opacity: 0.9; }
+
+        .download-hint {
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+            max-width: 26rem;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        .download-hint code {
+            font-family: ui-monospace, 'Cascadia Code', monospace;
+            font-size: 0.8em;
+            padding: 0.1em 0.35em;
+            border-radius: 6px;
+            background: var(--bg-card);
+            border: 1px solid var(--stroke);
+        }
+
         .carousel-container {
             width: 100%;
-            max-width: 1000px;
-            margin: 50px 0;
-            position: relative;
-            animation: slideUp 1.2s ease-out;
+            margin: clamp(2rem, 4vw, 3rem) 0;
         }
 
         .carousel-wrapper {
             position: relative;
             width: 100%;
-            height: 400px;
-            border-radius: 20px;
+            height: min(56vw, 420px);
+            min-height: 240px;
+            border-radius: var(--radius-lg);
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(46, 204, 113, 0.2);
+            border: 1px solid var(--stroke);
+            box-shadow: var(--shadow-lg);
+            background: var(--bg-card);
+        }
+
+        .carousel-viewport {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
         }
 
         .carousel-track {
             display: flex;
-            width: 500%;
             height: 100%;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .carousel-slide {
-            width: 20%;
             height: 100%;
-            position: relative;
             flex-shrink: 0;
+            position: relative;
         }
 
         .carousel-slide img {
@@ -236,747 +363,572 @@
             display: block;
         }
 
-        .carousel-slide .slide-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
-            padding: 30px;
-            color: white;
+        .slide-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1.5rem;
+            text-align: center;
         }
 
-        .slide-title {
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #2ecc71;
+        .slide-placeholder h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text);
+            text-shadow: none;
         }
 
-        .slide-description {
-            font-size: 1rem;
-            opacity: 0.9;
+        .slide-placeholder p {
+            font-size: 0.875rem;
+            color: rgba(15, 23, 42, 0.82);
+            max-width: 20rem;
+            line-height: 1.5;
+            text-shadow: none;
         }
 
-        /* 轮播图控制按钮 */
         .carousel-btn {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(46, 204, 113, 0.8);
-            border: none;
-            color: white;
-            width: 50px;
-            height: 50px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
+            border: 1px solid var(--stroke-strong);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            color: var(--text);
             cursor: pointer;
-            font-size: 20px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            z-index: 100;
+            font-size: 1.25rem;
+            line-height: 1;
+            z-index: 20;
+            transition: background 0.2s, border-color 0.2s;
         }
 
         .carousel-btn:hover {
-            background: rgba(46, 204, 113, 1);
-            transform: translateY(-50%) scale(1.1);
-            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+            background: rgba(52, 211, 153, 0.2);
+            border-color: rgba(52, 211, 153, 0.4);
         }
 
-        .carousel-btn.prev {
-            left: 20px;
-        }
+        .carousel-btn.prev { left: 14px; }
+        .carousel-btn.next { right: 14px; }
 
-        .carousel-btn.next {
-            right: 20px;
-        }
-
-        /* 轮播图指示器 */
         .carousel-indicators {
             position: absolute;
-            bottom: 20px;
+            bottom: 16px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 10px;
-            z-index: 100;
+            gap: 8px;
+            z-index: 20;
         }
 
         .carousel-indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.4);
+            width: 8px;
+            height: 8px;
+            border-radius: var(--radius-pill);
+            background: rgba(255, 255, 255, 0.25);
             cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
+            transition: width 0.3s, background 0.3s;
+            border: none;
+            padding: 0;
         }
 
         .carousel-indicator.active {
-            background: #2ecc71;
-            box-shadow: 0 0 10px rgba(46, 204, 113, 0.6);
-            border-color: rgba(255, 255, 255, 0.3);
+            width: 24px;
+            background: var(--accent);
         }
 
-        .carousel-indicator:hover {
-            background: rgba(255, 255, 255, 0.7);
-            transform: scale(1.2);
-        }
-
-        /* 产品卡片容器 */
-        .cards-container {
+        /* 产品说明：与轮播同宽，几乎无额外样式，便于只改 HTML 文案 */
+        .product-section {
             width: 100%;
-            max-width: 1200px;
-            padding: 0 20px;
-            position: relative;
+            margin: 0 auto 2rem;
         }
 
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            margin-bottom: 50px;
+        .product-section h2.section-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin: 0 0 1rem;
         }
 
-        /* 产品卡片 */
-        .product-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(46, 204, 113, 0.2);
-            border-radius: 20px;
-            padding: 30px;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            animation: cardFloat 1.5s ease-out;
-        }
-
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(46, 204, 113, 0.3);
-        }
-
-        @keyframes cardFloat {
-            0% {
-                opacity: 0;
-                transform: translateY(100px) scale(0.8);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .product-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
+        .product-copy {
             width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(46, 204, 113, 0.1), transparent);
-            animation: shimmer 3s infinite;
+            color: var(--text-muted);
+            font-size: 0.9375rem;
+            line-height: 1.75;
         }
 
-        @keyframes shimmer {
-            0% {
-                left: -100%;
-            }
-            100% {
-                left: 100%;
-            }
+        .product-copy h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 1.25rem 0 0.5rem;
         }
 
-        /* 卡片内容 */
-        .card-content {
-            color: white;
-            font-size: 16px;
-            line-height: 1.6;
-            min-height: 200px;
+        .product-copy h3:first-child { margin-top: 0; }
+
+        .product-copy p { margin: 0 0 0.75rem; }
+
+        .product-copy ul {
+            margin: 0 0 0.75rem;
+            padding-left: 1.25rem;
         }
 
-        /* Markdown 样式 */
-        .card-content h1, .card-content h2, .card-content h3 {
-            color: #2ecc71;
-            margin-bottom: 15px;
-        }
+        .product-copy li { margin-bottom: 0.35rem; }
 
-        .card-content h1 {
-            font-size: 1.8rem;
-        }
-
-        .card-content h2 {
-            font-size: 1.4rem;
-        }
-
-        .card-content h3 {
-            font-size: 1.2rem;
-        }
-
-        .card-content p {
-            margin-bottom: 15px;
-        }
-
-        .card-content ul, .card-content ol {
-            margin-left: 20px;
-            margin-bottom: 15px;
-        }
-
-        .card-content li {
-            margin-bottom: 5px;
-        }
-
-        .card-content code {
-            background: rgba(46, 204, 113, 0.2);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: 'Monaco', 'Menlo', monospace;
-        }
-
-        .card-content pre {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 15px;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin-bottom: 15px;
-        }
-
-        .card-content blockquote {
-            border-left: 4px solid #2ecc71;
-            padding-left: 20px;
-            margin: 15px 0;
-            font-style: italic;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .card-content a {
-            color: #2ecc71;
-            text-decoration: none;
-            border-bottom: 1px solid transparent;
-            transition: border-color 0.3s ease;
-        }
-
-        .card-content a:hover {
-            border-bottom-color: #2ecc71;
-        }
-
-        /* 分页组件 */
-        .pagination {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 30px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(46, 204, 113, 0.2);
-            border-radius: 15px;
-            animation: fadeInUp 0.6s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            0% {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .pagination-btn {
-            background: rgba(46, 204, 113, 0.2);
-            border: 1px solid rgba(46, 204, 113, 0.4);
-            color: #2ecc71;
-            padding: 10px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            min-width: 45px;
+        .site-footer {
             text-align: center;
+            padding: 2rem 1rem 3rem;
+            color: var(--text-muted);
+            font-size: 0.8125rem;
         }
 
-        .pagination-btn:hover {
-            background: rgba(46, 204, 113, 0.3);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
-        }
-
-        .pagination-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .pagination-btn.active {
-            background: #2ecc71;
-            color: white;
-            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
-        }
-
-        .pagination-input {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(46, 204, 113, 0.3);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
-            width: 60px;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        .pagination-input:focus {
-            outline: none;
-            border-color: #2ecc71;
-            box-shadow: 0 0 10px rgba(46, 204, 113, 0.3);
-        }
-
-        .pagination-info {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 14px;
-            margin: 0 10px;
-        }
-
-        /* 底部装饰 */
-        .footer-decoration {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 150px;
-            background: linear-gradient(0deg, rgba(15, 32, 39, 0.8) 0%, transparent 100%);
-            pointer-events: none;
-            z-index: 5;
-        }
-
-        .forest-elements {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 100px;
-            overflow: hidden;
-        }
-
-        .tree {
-            position: absolute;
-            bottom: 0;
-            width: 0;
-            height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-bottom: 60px solid #27ae60;
-            animation: treeGrow 2s ease-out;
-            filter: blur(2px);
-        }
-
-        .tree:nth-child(1) {
-            left: 10%;
-            animation-delay: 0.5s;
-        }
-
-        .tree:nth-child(2) {
-            left: 25%;
-            animation-delay: 1s;
-        }
-
-        .tree:nth-child(3) {
-            left: 40%;
-            animation-delay: 1.5s;
-        }
-
-        .tree:nth-child(4) {
-            left: 60%;
-            animation-delay: 2s;
-        }
-
-        .tree:nth-child(5) {
-            left: 80%;
-            animation-delay: 2.5s;
-        }
-
-        @keyframes treeGrow {
-            0% {
-                transform: scaleY(0);
-                opacity: 0;
-            }
-            100% {
-                transform: scaleY(1);
-                opacity: 1;
-            }
-        }
-
-        /* 响应式设计 */
-        @media (max-width: 768px) {
+        @media (max-width: 640px) {
             .navbar {
-                padding: 15px 20px;
+                height: 64px;
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
             }
-
-            .nav-links {
+            .brand-text {
                 display: none;
             }
-
-            .hero-title {
-                font-size: 2.5rem;
+            .nav-actions {
+                gap: 0.35rem;
             }
-
-            .hero-subtitle {
-                font-size: 1.2rem;
+            .lang-toggle button {
+                padding: 0.35rem 0.5rem;
             }
-
-            .carousel-container {
-                margin: 30px 20px;
+            .nav-link {
+                font-size: 0.8125rem;
+                padding: 0.4rem 0.65rem;
             }
-
-            .carousel-wrapper {
-                height: 300px;
-            }
-
-            .carousel-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 16px;
-            }
-
-            .carousel-btn.prev {
-                left: 10px;
-            }
-
-            .carousel-btn.next {
-                right: 10px;
-            }
-
-            .slide-overlay {
-                padding: 20px;
-            }
-
-            .slide-title {
-                font-size: 1.4rem;
-            }
-
-            .slide-description {
-                font-size: 0.9rem;
-            }
-
-            .cards-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .product-card {
-                padding: 20px;
-            }
-
-            .pagination {
-                flex-wrap: wrap;
-                gap: 10px;
-            }
+            .carousel-btn { width: 38px; height: 38px; }
+            .download-row { flex-direction: column; }
+            .btn-download { width: 100%; }
         }
     </style>
 </head>
 <body>
-<!-- 动态背景粒子 -->
-<div class="particles" id="particles"></div>
-
-<!-- 导航栏 -->
-<nav class="navbar">
-    <div class="logo">
-        Tree value
-    </div>
-    <ul class="nav-links">
-        <!--        <li><a href="#home">首页</a></li>-->
-        <!--        <li><a href="#product">产品</a></li>-->
-        <!--        <li><a href="#features">特性</a></li>-->
-        <!--        <li><a href="#contact">联系</a></li>-->
-    </ul>
-</nav>
-
-<!-- 主要内容 -->
-<main class="main-content">
-    <!-- 标题区域 -->
-    <section class="hero-section">
-        <h1 class="hero-title">Beself</h1>
-        <p class="hero-subtitle">我走进森林，不是为了寻找。我走进森林，是为了迷失。</p>
-    </section>
-
-    <!-- 轮播图区域 -->
-    <div class="carousel-container">
-        <div class="carousel-wrapper">
-            <div class="carousel-track" id="carouselTrack">
-                <!-- 轮播图片将通过JavaScript动态生成 -->
-            </div>
-
-            <!-- 左右切换按钮 -->
-            <button class="carousel-btn prev" id="prevCarouselBtn">‹</button>
-            <button class="carousel-btn next" id="nextCarouselBtn">›</button>
-
-            <!-- 指示器 -->
-            <div class="carousel-indicators" id="carouselIndicators">
-                <!-- 指示器将通过JavaScript动态生成 -->
-            </div>
-        </div>
-    </div>
-
-    <!-- 产品卡片容器 -->
-    <div class="cards-container">
-        <div class="cards-grid" id="cardsGrid">
-            <!-- 卡片将通过JavaScript动态生成 -->
-        </div>
-
-        <!-- 分页组件 -->
-        <div class="pagination" id="pagination">
-            <button class="pagination-btn" id="prevBtn">‹</button>
-            <div class="pagination-info">
-                <span>第</span>
-                <input class="pagination-input" id="pageInput" min="1">
-                <span>页，共 <span id="totalPages">1</span> 页</span>
-            </div>
-            <button class="pagination-btn" id="nextBtn">›</button>
-            <button class="pagination-btn" id="firstBtn">首页</button>
-            <button class="pagination-btn" id="lastBtn">尾页</button>
-        </div>
-    </div>
-</main>
-
-<!-- 底部装饰 -->
-<div class="footer-decoration">
-    <div class="forest-elements">
-        <div class="tree"></div>
-        <div class="tree"></div>
-        <div class="tree"></div>
-        <div class="tree"></div>
-        <div class="tree"></div>
-    </div>
+<div class="bg-layer" aria-hidden="true">
+    <div class="bg-mesh"></div>
+    <div class="bg-grid"></div>
+    <div class="noise"></div>
 </div>
 
-<!-- 引入外部JS文件 -->
-<script src="assestes/js/productContents.js"></script>
+<nav class="navbar" id="navbar">
+    <a class="brand" href="index.html" aria-label="Beself home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text">Beself</span>
+    </a>
+    <div class="nav-actions">
+        <div class="lang-toggle" role="group" aria-label="Language">
+            <button type="button" id="langZh" data-lang="zh" aria-pressed="true">中文</button>
+            <button type="button" id="langEn" data-lang="en" aria-pressed="false">EN</button>
+        </div>
+        <a class="nav-link" href="privacy-policy/index.html">
+            <span class="i18n-zh">隐私政策</span>
+            <span class="i18n-en">Privacy</span>
+        </a>
+    </div>
+</nav>
+
+<main class="main-content">
+    <section class="hero-section">
+        <div class="hero-badge">
+            <span class="i18n-zh">有用 · 专业 · 智能 · 自律</span>
+            <span class="i18n-en">Useful · Professional · Smart · Self-discipline</span>
+        </div>
+        <h1 class="hero-title">Beself</h1>
+        <p class="hero-subtitle i18n-zh">跨平台的浏览与自控工具：多标签网页、站点规则、下载与本地工具集中在同一套界面中。</p>
+        <p class="hero-subtitle i18n-en">A cross-platform browser and self-control workspace: tabs, site rules, downloads, and local tools in one place.</p>
+
+        <div class="download-row">
+            <a class="btn-download btn-download--primary"
+               href="https://wwbvb.lanzoux.com/iAT2z3kec1ri"
+               rel="noopener noreferrer"
+               target="_blank">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4486.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4486.9993.9993 0 .5511-.4483.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1527-.5676.416.416 0 00-.5676.1527l-2.0223 3.503C15.5902 8.2439 13.8533 7.8508 12 7.8508s-3.5902.3931-5.1349 1.0987L4.8428 5.4463a.4161.4161 0 00-.5676-.1527.4157.4157 0 00-.1527.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.785h24c-.3435-4.1261-2.6892-7.5983-6.1185-9.4636"/>
+                </svg>
+                <span class="i18n-zh">安卓版下载</span>
+                <span class="i18n-en">Android</span>
+            </a>
+            <a class="btn-download"
+               href="https://wwxb.lanzoux.com/b0139b1lve"
+               rel="noopener noreferrer"
+               target="_blank">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <rect x="2" y="3" width="20" height="14" rx="2"/>
+                    <path d="M8 21h8M12 17v4"/>
+                </svg>
+                <span class="i18n-zh">桌面版下载</span>
+                <span class="i18n-en">Desktop</span>
+            </a>
+        </div>
+        <p class="download-hint i18n-zh">桌面版若为分包，请在应用内「其他功能 → 压缩」中使用合并流程恢复完整安装包。提取密码：<code>3oin</code></p>
+        <p class="download-hint i18n-en">If the desktop build is split, merge pieces in-app under <strong>Other functions → Compression</strong>. Extraction code: <code>3oin</code></p>
+    </section>
+
+    <div class="carousel-container">
+        <div class="carousel-wrapper" id="carouselWrapper">
+            <div class="carousel-viewport">
+                <div class="carousel-track" id="carouselTrack"></div>
+            </div>
+            <button type="button" class="carousel-btn prev" id="prevCarouselBtn" aria-label="上一张">‹</button>
+            <button type="button" class="carousel-btn next" id="nextCarouselBtn" aria-label="下一张">›</button>
+            <div class="carousel-indicators" id="carouselIndicators" role="tablist" aria-label="Carousel"></div>
+        </div>
+    </div>
+
+    <section class="product-section" aria-labelledby="product-heading">
+        <h2 id="product-heading" class="section-label">
+            <span class="i18n-zh">产品说明</span>
+            <span class="i18n-en">Product</span>
+        </h2>
+        <div id="cardsGrid" class="product-copy"></div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <p>© Treevalue</p>
+</footer>
 
 <script>
-    // 分页配置
-    const ITEMS_PER_PAGE = 10;
-    let currentPage = 1;
-    let totalPages = Math.ceil(productContents.length / ITEMS_PER_PAGE);
+(function () {
+    'use strict';
 
-    // 轮播图配置
-    let currentSlide = 0;
-    let carouselInterval;
-    const CAROUSEL_INTERVAL = 4000; // 4秒自动切换
+    var LANG_KEY = 'beself_site_lang';
 
-    // 创建粒子效果
-    function createParticles() {
-        const particles = document.getElementById('particles');
+    /* 网站功能控制在全文约三成以内；其余突出便签、日程、股票等工具与主界面能力 */
+    var PRODUCT_HTML_ZH =
+        '<h3>主界面与浏览</h3>' +
+        '<p>多标签网页、顶栏导航（刷新、前进后退、复制链接、强制深色）、站点侧栏与下载侧栏二选一显示。页面请求可走应用内策略（允许 / 隐藏 / 屏蔽等），减少干扰；支持当前页截图存为本地快照标签。下载任务在侧栏集中查看。</p>' +
+        '<h3>网站功能</h3>' +
+        '<p>在「功能设置 → 网站功能」中集中管理：允许名单与正则、隐藏列表、屏蔽与域名快捷操作、从 URL 抓取链接、打开链接或本地文件、自定义起始页与首页文案。细节在应用内按需配置即可。</p>' +
+        '<h3>智能功能与其他工具</h3>' +
+        '<p>「智能功能」入口把常用工具放在一起，例如：</p>' +
+        '<ul>' +
+        '<li>股票监控：行情、K 线与信号类能力。</li>' +
+        '<li>便签：记录灵感、任务与笔记。</li>' +
+        '<li>日程管理：普通 / 循环 / 顺序等任务与时间编排，可与规则、视听管理等能力配合。</li>' +
+        '<li>本地音乐：播放本机音频。</li>' +
+        '<li>视频预定：按日选择与管理视听时段。</li>' +
+        '<li>压缩：图片压缩、视频去声、文件分割与合并（桌面分包也可在应用内按流程合并）。</li>' +
+        '<li>计算器、系统设置、网站快捷操作等。</li>' +
+        '</ul>' +
+        '<p>「其他功能」中另有扩展能力（如与日程相关的视听控制等）。「关于」含帮助中心、获取更新（本站）、赞助等。数据默认在本机，可按应用内说明备份与迁移。</p>' +
+        '<p>反馈与建议：请通过应用内「帮助中心」提交，并说明场景与复现条件。</p>';
 
-        for (let i = 0; i < 50; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.animationDelay = Math.random() * 10 + 's';
-            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-            particles.appendChild(particle);
+    var PRODUCT_HTML_EN =
+        '<h3>Shell and browsing</h3>' +
+        '<p>Multi-tab web views with a top bar (reload, back/forward, copy URL, forced dark mode). Site sidebar and download sidebar open exclusively. Requests can follow in-app policies (allow / hide / block). Capture the active tab to a local snapshot tab. Downloads are tracked in the sidebar.</p>' +
+        '<h3>Site tools</h3>' +
+        '<p>Under Function settings → Site management: allow lists and regex, hidden lists, blocking with quick domain actions, link grab from a URL, open links or local files, and custom start/home text. Tune details inside the app.</p>' +
+        '<h3>Smart hub and more</h3>' +
+        '<p>Smart features groups tools such as:</p>' +
+        '<ul>' +
+        '<li>Stock monitor: quotes, charts, and signal features.</li>' +
+        '<li>Notes: ideas, tasks, and quick notes.</li>' +
+        '<li>Schedule: normal, cyclic, and sequential tasks and timing—pairs well with rules and media controls.</li>' +
+        '<li>Local music: play on-device audio.</li>' +
+        '<li>Video reservation: pick days and slots for viewing.</li>' +
+        '<li>Compression: image tools, strip audio from video, split/merge files (split desktop installers can be merged in-app).</li>' +
+        '<li>Calculator, system settings, site shortcuts, and more.</li>' +
+        '</ul>' +
+        '<p>Other functions adds extensions (e.g. media controls tied to schedules). About includes Help, updates (this site), and sponsorship. Data stays on device; backup/migrate per in-app guidance.</p>' +
+        '<p>Feedback: submit via Help in the app and include scenario and repro steps.</p>';
+
+    function getProductHtml(lang) {
+        return lang === 'en' ? PRODUCT_HTML_EN : PRODUCT_HTML_ZH;
+    }
+
+    /**
+     * Optional screenshot URLs (under site root). If missing, gradient placeholders show.
+     * Paths work on GitHub Pages root and when index.html lives beside /assestes/.
+     */
+    function assetUrl(relativePath) {
+        try {
+            return new URL(relativePath, window.location.href).href;
+        } catch (e) {
+            return relativePath;
         }
     }
 
-    // 初始化轮播图
-    function initCarousel() {
-        const carouselTrack = document.getElementById('carouselTrack');
-        const carouselIndicators = document.getElementById('carouselIndicators');
+    var CAROUSEL_DEF = [
+        {
+            image: 'assestes/img/home-comp.jpg',
+            gradient: 'linear-gradient(145deg, #0f1f18 0%, #0a1628 45%, #12101c 100%)',
+            zh: { title: '主工作区', desc: '顶栏、多标签与网页区域；站点侧栏或下载侧栏与网页区并排显示。' },
+            en: { title: 'Main workspace', desc: 'Top bar, tabs, and the page; site or download sidebar beside the web view.' }
+        },
+        {
+            image: 'assestes/img/func-comp.jpg',
+            gradient: 'linear-gradient(145deg, #101828 0%, #0d2137 50%, #0f172a 100%)',
+            zh: { title: '网站规则与功能', desc: '允许、隐藏、屏蔽、正则、抓取与起始页等，对应「功能设置 → 网站功能」。' },
+            en: { title: 'Site rules & tools', desc: 'Allow, hide, block, regex, grab, and start page—under Function settings → Site management.' }
+        },
+        {
+            image: 'assestes/img/search-comp.jpg',
+            gradient: 'linear-gradient(145deg, #1a1530 0%, #132a28 55%, #0f172a 100%)',
+            zh: { title: '下载与拦截', desc: '下载任务侧栏、链接抓取与请求拦截策略，减少干扰、保持自控。' },
+            en: { title: 'Downloads & filtering', desc: 'Download panel, link tools, and request policies for focus and control.' }
+        },
+        {
+            plain: true,
+            image: '',
+            gradient: 'linear-gradient(145deg, #152238 0%, #1a2040 100%)'
+        }
+    ];
 
-        // 生成轮播图片
-        carouselImages.forEach((image, index) => {
-            const slide = document.createElement('div');
+    var uiLang = 'zh';
+    var productHtml = '';
+    var currentSlide = 0;
+    var carouselInterval;
+    var slidePx = 0;
+    var CAROUSEL_INTERVAL = 4500;
+    var carouselLen = CAROUSEL_DEF.length;
+
+    function detectLang() {
+        try {
+            var saved = localStorage.getItem(LANG_KEY);
+            if (saved === 'zh' || saved === 'en') return saved;
+        } catch (e) { /* ignore */ }
+        return navigator.language && navigator.language.toLowerCase().startsWith('zh') ? 'zh' : 'en';
+    }
+
+    function applyUiLang(lang) {
+        uiLang = lang;
+        try {
+            localStorage.setItem(LANG_KEY, lang);
+        } catch (e) { /* ignore */ }
+
+        document.documentElement.setAttribute('data-ui-lang', lang);
+        document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+
+        var langZh = document.getElementById('langZh');
+        var langEn = document.getElementById('langEn');
+        if (langZh) langZh.setAttribute('aria-pressed', lang === 'zh' ? 'true' : 'false');
+        if (langEn) langEn.setAttribute('aria-pressed', lang === 'en' ? 'true' : 'false');
+
+        productHtml = getProductHtml(lang);
+        renderCards();
+        refreshAriaLabels();
+        refreshCarouselIndicatorLabels();
+        document.title = lang === 'zh' ? 'Beself — 跨平台浏览器与工具' : 'Beself — Cross-platform browser & tools';
+    }
+
+    function refreshAriaLabels() {
+        var z = uiLang === 'zh';
+        var prevBtn = document.getElementById('prevCarouselBtn');
+        var nextBtn = document.getElementById('nextCarouselBtn');
+        var ind = document.getElementById('carouselIndicators');
+        var brand = document.querySelector('.navbar .brand');
+        if (prevBtn) prevBtn.setAttribute('aria-label', z ? '上一张' : 'Previous slide');
+        if (nextBtn) nextBtn.setAttribute('aria-label', z ? '下一张' : 'Next slide');
+        if (brand) brand.setAttribute('aria-label', z ? 'Beself 首页' : 'Beself home');
+        if (ind) ind.setAttribute('aria-label', z ? '轮播图' : 'Carousel');
+    }
+
+    function refreshCarouselIndicatorLabels() {
+        var z = uiLang === 'zh';
+        document.querySelectorAll('.carousel-indicator').forEach(function (el, index) {
+            el.setAttribute('aria-label', z ? ('第 ' + (index + 1) + ' 张') : ('Slide ' + (index + 1)));
+        });
+    }
+
+    function layoutCarousel() {
+        var wrap = document.getElementById('carouselWrapper');
+        var track = document.getElementById('carouselTrack');
+        if (!wrap || !track) return;
+        slidePx = wrap.offsetWidth;
+        track.style.width = (slidePx * carouselLen) + 'px';
+        var slides = track.querySelectorAll('.carousel-slide');
+        slides.forEach(function (s) {
+            s.style.width = slidePx + 'px';
+        });
+        goToSlide(currentSlide);
+    }
+
+    function buildCarouselSlides() {
+        var carouselTrack = document.getElementById('carouselTrack');
+        var carouselIndicators = document.getElementById('carouselIndicators');
+        if (!carouselTrack || !carouselIndicators) return;
+
+        carouselTrack.innerHTML = '';
+        carouselIndicators.innerHTML = '';
+
+        CAROUSEL_DEF.forEach(function (def, index) {
+            var slide = document.createElement('div');
             slide.className = 'carousel-slide';
-            slide.innerHTML = `
-                <img src="${image.src}" alt="${image.alt}" loading="lazy">
-                <div class="slide-overlay">
-<!--                    <h3 class="slide-title">${image.title}</h3>-->
-<!--                    <p class="slide-description">${image.alt}</p>-->
-                </div>
-            `;
+
+            if (def.plain) {
+                slide.style.background = def.gradient;
+                carouselTrack.appendChild(slide);
+                var indPlain = document.createElement('button');
+                indPlain.type = 'button';
+                indPlain.className = 'carousel-indicator' + (index === 0 ? ' active' : '');
+                indPlain.addEventListener('click', function () { goToSlide(index); });
+                carouselIndicators.appendChild(indPlain);
+                return;
+            }
+
+            var inner = document.createElement('div');
+            inner.className = 'slide-placeholder';
+            inner.style.background = def.gradient;
+
+            var h = document.createElement('h3');
+            var p = document.createElement('p');
+            h.innerHTML = '<span class="i18n-zh">' + esc(def.zh.title) + '</span><span class="i18n-en">' + esc(def.en.title) + '</span>';
+            p.innerHTML = '<span class="i18n-zh">' + esc(def.zh.desc) + '</span><span class="i18n-en">' + esc(def.en.desc) + '</span>';
+            inner.appendChild(h);
+            inner.appendChild(p);
+
+            if (def.image) {
+                var img = document.createElement('img');
+                img.alt = '';
+                img.loading = index === 0 ? 'eager' : 'lazy';
+                img.decoding = 'async';
+                img.src = assetUrl(def.image);
+                img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;';
+                slide.style.position = 'relative';
+                inner.style.position = 'relative';
+                inner.style.zIndex = '1';
+                img.addEventListener('load', function () {
+                    img.style.opacity = '1';
+                    inner.style.display = 'none';
+                });
+                img.addEventListener('error', function () {
+                    img.remove();
+                });
+                img.style.opacity = '0';
+                img.style.transition = 'opacity 0.4s ease';
+                slide.insertBefore(img, null);
+                slide.appendChild(inner);
+            } else {
+                slide.appendChild(inner);
+            }
+
             carouselTrack.appendChild(slide);
 
-            // 生成指示器
-            const indicator = document.createElement('div');
-            indicator.className = 'carousel-indicator';
-            if (index === 0) indicator.classList.add('active');
-            indicator.addEventListener('click', () => goToSlide(index));
+            var indicator = document.createElement('button');
+            indicator.type = 'button';
+            indicator.className = 'carousel-indicator' + (index === 0 ? ' active' : '');
+            indicator.addEventListener('click', function () { goToSlide(index); });
             carouselIndicators.appendChild(indicator);
         });
 
-        // 开始自动播放
-        startCarouselAutoplay();
+        carouselLen = CAROUSEL_DEF.length;
+        layoutCarousel();
     }
 
-    // 切换到指定幻灯片
+    function esc(s) {
+        return String(s)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
     function goToSlide(slideIndex) {
         currentSlide = slideIndex;
-        const carouselTrack = document.getElementById('carouselTrack');
-        const indicators = document.querySelectorAll('.carousel-indicator');
+        var carouselTrack = document.getElementById('carouselTrack');
+        var indicators = document.querySelectorAll('.carousel-indicator');
+        if (!carouselTrack) return;
+        if (slidePx <= 0) layoutCarousel();
+        carouselTrack.style.transform = 'translateX(-' + (currentSlide * slidePx) + 'px)';
 
-        // 更新轮播图位置
-        carouselTrack.style.transform = `translateX(-${currentSlide * 20}%)`;
-
-        // 更新指示器状态
-        indicators.forEach((indicator, index) => {
+        indicators.forEach(function (indicator, index) {
             indicator.classList.toggle('active', index === currentSlide);
         });
 
-        // 重新启动自动播放
         restartCarouselAutoplay();
     }
 
-    // 下一张幻灯片
     function nextSlide() {
-        const nextIndex = (currentSlide + 1) % carouselImages.length;
+        var nextIndex = (currentSlide + 1) % carouselLen;
         goToSlide(nextIndex);
     }
 
-    // 上一张幻灯片
     function prevSlide() {
-        const prevIndex = (currentSlide - 1 + carouselImages.length) % carouselImages.length;
+        var prevIndex = (currentSlide - 1 + carouselLen) % carouselLen;
         goToSlide(prevIndex);
     }
 
-    // 开始自动播放
     function startCarouselAutoplay() {
+        stopCarouselAutoplay();
         carouselInterval = setInterval(nextSlide, CAROUSEL_INTERVAL);
     }
 
-    // 停止自动播放
     function stopCarouselAutoplay() {
-        if (carouselInterval) {
-            clearInterval(carouselInterval);
-        }
+        if (carouselInterval) clearInterval(carouselInterval);
     }
 
-    // 重新启动自动播放
     function restartCarouselAutoplay() {
         stopCarouselAutoplay();
         startCarouselAutoplay();
     }
 
-    // 渲染卡片
     function renderCards() {
-        const cardsGrid = document.getElementById('cardsGrid');
-        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-        const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, productContents.length);
-
-        // 清空现有卡片
-        cardsGrid.innerHTML = '';
-
-        // 生成当前页的卡片
-        for (let i = startIndex; i < endIndex; i++) {
-            const cardElement = document.createElement('div');
-            cardElement.className = 'product-card';
-            cardElement.style.animationDelay = `${(i - startIndex) * 0.1}s`;
-
-            cardElement.innerHTML = `
-                <div class="card-content">
-                    ${marked.parse(productContents[i])}
-                </div>
-            `;
-
-            cardsGrid.appendChild(cardElement);
-        }
+        var cardsGrid = document.getElementById('cardsGrid');
+        if (!cardsGrid) return;
+        cardsGrid.innerHTML = productHtml;
     }
 
-    // 更新分页组件
-    function updatePagination() {
-        const pageInput = document.getElementById('pageInput');
-        const totalPagesSpan = document.getElementById('totalPages');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const firstBtn = document.getElementById('firstBtn');
-        const lastBtn = document.getElementById('lastBtn');
-
-        pageInput.value = currentPage;
-        pageInput.max = totalPages;
-        totalPagesSpan.textContent = totalPages;
-
-        prevBtn.disabled = currentPage === 1;
-        nextBtn.disabled = currentPage === totalPages;
-        firstBtn.disabled = currentPage === 1;
-        lastBtn.disabled = currentPage === totalPages;
+    var resizeTimer;
+    function onResize() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function () {
+            layoutCarousel();
+        }, 120);
     }
 
-    // 跳转到指定页面
-    function goToPage(page) {
-        if (page >= 1 && page <= totalPages && page !== currentPage) {
-            currentPage = page;
-            renderCards();
-            updatePagination();
+    function wireEvents() {
+        var langZh = document.getElementById('langZh');
+        var langEn = document.getElementById('langEn');
+        if (langZh) {
+            langZh.addEventListener('click', function (e) {
+                e.preventDefault();
+                applyUiLang('zh');
+            });
         }
+        if (langEn) {
+            langEn.addEventListener('click', function (e) {
+                e.preventDefault();
+                applyUiLang('en');
+            });
+        }
+
+        var prevBtn = document.getElementById('prevCarouselBtn');
+        var nextBtn = document.getElementById('nextCarouselBtn');
+        if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+        if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+
+        var carouselWrapper = document.getElementById('carouselWrapper');
+        if (carouselWrapper) {
+            carouselWrapper.addEventListener('mouseenter', stopCarouselAutoplay);
+            carouselWrapper.addEventListener('mouseleave', startCarouselAutoplay);
+        }
+
+        window.addEventListener('resize', onResize);
     }
 
-    // 滚动时导航栏效果
-    window.addEventListener('scroll', function () {
-        const navbar = document.querySelector('.navbar');
-        if (window.scrollY > 50) {
-            navbar.style.background = 'rgba(15, 32, 39, 0.95)';
-            navbar.style.transform = 'translateY(0)';
-        } else {
-            navbar.style.background = 'rgba(15, 32, 39, 0.8)';
-        }
-    });
+    function init() {
+        wireEvents();
+        buildCarouselSlides();
+        applyUiLang(detectLang());
+        startCarouselAutoplay();
+    }
 
-    // 初始化
-    document.addEventListener('DOMContentLoaded', function () {
-        createParticles();
-        initCarousel();
-
-        // 计算总页数
-        totalPages = Math.ceil(productContents.length / ITEMS_PER_PAGE);
-
-        // 初始渲染
-        renderCards();
-        updatePagination();
-
-        // 绑定轮播图事件
-        document.getElementById('prevCarouselBtn').addEventListener('click', () => {
-            prevSlide();
-        });
-
-        document.getElementById('nextCarouselBtn').addEventListener('click', () => {
-            nextSlide();
-        });
-
-        // 鼠标悬停时暂停自动播放
-        const carouselWrapper = document.querySelector('.carousel-wrapper');
-        carouselWrapper.addEventListener('mouseenter', stopCarouselAutoplay);
-        carouselWrapper.addEventListener('mouseleave', startCarouselAutoplay);
-
-        // 绑定分页事件
-        document.getElementById('prevBtn').addEventListener('click', () => {
-            goToPage(currentPage - 1);
-        });
-
-        document.getElementById('nextBtn').addEventListener('click', () => {
-            goToPage(currentPage + 1);
-        });
-
-        document.getElementById('firstBtn').addEventListener('click', () => {
-            goToPage(1);
-        });
-
-        document.getElementById('lastBtn').addEventListener('click', () => {
-            goToPage(totalPages);
-        });
-
-        document.getElementById('pageInput').addEventListener('change', (e) => {
-            const page = parseInt(e.target.value);
-            goToPage(page);
-        });
-
-        document.getElementById('pageInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const page = parseInt(e.target.value);
-                goToPage(page);
-            }
-        });
-    });
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
 </script>
 </body>
 </html>
